@@ -4,7 +4,7 @@ def imageTag = "darinpope/alpine-basictools:" + timeInMillis
 pipeline {
   agent any
   environment {
-    SYSTEM=credentials('system')
+    ADMIN=credentials('admin')
   }
   stages {
     stage('Hello') {
@@ -14,12 +14,12 @@ pipeline {
           docker build -t ${imageTag} .
         """
         sh '''
-          echo $SYSTEM_PSW | docker login --username=$SYSTEM_USR --password-stdin
+          echo $ADMIN_PSW | docker login --username=$ADMIN_USR --password-stdin
         '''
         script {
           def sha256 = sh(returnStdout: true, script:"docker push ${imageTag} | grep sha256 | awk -F':' '{print \$4}' | awk '{print \$1}'").trim()
           echo sha256
-          def url = "https://hub.docker.com/layers/" + env.SYSTEM_USR + "/alpine-basictools/" + timeInMillis + "/images/sha256-" + sha256 + "?context=explore"
+          def url = "https://hub.docker.com/layers/" + env.ADMINM_USR + "/alpine-basictools/" + timeInMillis + "/images/sha256-" + sha256 + "?context=explore"
           addSidebarLink(url:url,text:"Image on Docker Hub",icon:"star.gif")
         }
       }
