@@ -4,7 +4,7 @@ def imageTag = "darinpope/alpine-basictools:" + timeInMillis
 pipeline {
   agent any
   environment {
-    DH_CREDS=credentials('dh-creds')
+    DH_CREDS=credentials('system')
   }
   stages {
     stage('Hello') {
